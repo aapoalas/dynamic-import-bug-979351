@@ -24,13 +24,16 @@ app.get('/', (req, res) => {
     </head>
     <body>
       <div class="main">
-        <div class="dynamic-start">Script containing dynamic import executed</div>
-        <div class="dynamic-load">Script loaded dynamically executed</div>
         <div class="traditional-start">Script containing traditional script element appending executed</div>
+        <div class="import-start">Script containing static import executed</div>
+        <div class="dynamic-start">Script containing dynamic import executed</div>
         <div class="traditional-load">Script appended traditionally executed</div>
+        <div class="import-load">Script loaded statically executed</div>
+        <div class="dynamic-load">Script loaded dynamically executed</div>
       </div>
-      <script src="static/dynamic.js" nonce="${res.locals.nonce}" type="module"></script>
-      <script src="static/traditional.js" nonce="${res.locals.nonce}" type="module"></script>
+      <script src="static/import.js" nonce="${res.locals.nonce}" type="module" async></script>
+      <script src="static/traditional.js" nonce="${res.locals.nonce}" type="module" async></script>
+      <script src="static/dynamic.js" nonce="${res.locals.nonce}" type="module" async></script>
     </body>`
   );
 });
