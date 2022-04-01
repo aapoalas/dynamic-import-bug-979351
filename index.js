@@ -4,9 +4,8 @@
 import { serve } from "https://deno.land/std@0.114.0/http/server.ts";
 import { h, renderSSR } from "https://deno.land/x/nano_jsx@v0.0.20/mod.ts";
 
-function App(nonce) {
-  return (
-    <head>
+function app(nonce) {
+  return `<head>
       <link href="static/master.css" rel="stylesheet" type="text/css">
     </head>
     <body>
@@ -18,11 +17,10 @@ function App(nonce) {
         <div class="import-load">Script loaded statically executed</div>
         <div class="dynamic-load">Script loaded dynamically executed</div>
       </div>
-      <script src="static/import.js" nonce={nonce} type="module" async></script>
-      <script src="static/traditional.js" nonce={nonce} type="module" async></script>
-      <script src="static/dynamic.js" nonce={nonce} type="module" async></script>
-    </body>
-  );
+      <script src="static/import.js" nonce="${nonce}" type="module" async></script>
+      <script src="static/traditional.js" nonce="${nonce}" type="module" async></script>
+      <script src="static/dynamic.js" nonce="${nonce}" type="module" async></script>
+    </body>`;
 }
 
 function handler(req) {
