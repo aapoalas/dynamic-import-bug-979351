@@ -1,25 +1,9 @@
-const express = require('express');
-const csp = require("helmet-csp");
-const crypto = require("crypto");
-const app = express();
+import { serve } from "https://deno.land/std@0.114.0/http/server.ts";
+import { h, renderSSR } from "https://deno.land/x/nano_jsx@v0.0.20/mod.ts";
 
-app.use((req, res, next) => {
-  res.locals.nonce = crypto.randomBytes(12).toString("base64");
-  next();
-});
-
-app.use(csp({
-  directives: {
-    scriptSrc: [
-      (req, res) => `'nonce-${res.locals.nonce}'`,
-      "'strict-dynamic'",
-    ]
-  }
-}));
-
-app.get('/', (req, res) => {
-  res.send(
-    `<head>
+function App(nonce) {
+  return (
+    <head>
       <link href="static/master.css" rel="stylesheet" type="text/css">
     </head>
     <body>
@@ -31,18 +15,45 @@ app.get('/', (req, res) => {
         <div class="import-load">Script loaded statically executed</div>
         <div class="dynamic-load">Script loaded dynamically executed</div>
       </div>
-      <script src="static/import.js" nonce="${res.locals.nonce}" type="module" async></script>
-      <script src="static/traditional.js" nonce="${res.locals.nonce}" type="module" async></script>
-      <script src="static/dynamic.js" nonce="${res.locals.nonce}" type="module" async></script>
-    </body>`
+      <script src="static/import.js" nonce={nonce} type="module" async></script>
+      <script src="static/traditional.js" nonce={nonce} type="module" async></script>
+      <script src="static/dynamic.js" nonce={nonce} type="module" async></script>
+    </body>
   );
+}
+
+serve((req, res) => {
+  res.locals.nonce = crypto.randomBytes(12).toString("base64");
 });
 
-app.use("/static", express.static("static"));
+app.use(csp({
+  directives: {
+    scriptSrc: [
+      (req, res) => `'nonce-${res.locals.nonce}'`,
+      "'strict-dynamic'",
+    ]
+  }
+}));
 
-const server = app.listen(8080, () => {
-  const host = server.address().address;
-  const port = server.address().port;
-
-  console.log(`Example app listening at http://${host}:${port}`);
-});
+function handler(req) {
+  const { pathname } = new URL(req.url);
+  if (pathname.startsWith("/resources")) {
+    return Deno.readFile("." + pathname).then(file => 
+    new Reponse(file, {
+      headers: {
+        "content-type": pathname.endsWith(".css") ? "text/css" : "application/javascript"
+      }
+    })).catch(
+      err => new Response(err.message, {
+        status: 404
+      })
+    );
+  }
+  
+    const html = renderSSR(<App />);
+    return new Response(html, {
+      headers: {
+        "content-type": "text/html",
+      },
+    });
+}
