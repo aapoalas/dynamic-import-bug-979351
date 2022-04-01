@@ -22,10 +22,6 @@ function App(nonce) {
   );
 }
 
-serve((req, res) => {
-  res.locals.nonce = crypto.randomBytes(12).toString("base64");
-});
-
 app.use(csp({
   directives: {
     scriptSrc: [
@@ -50,10 +46,14 @@ function handler(req) {
     );
   }
   
-    const html = renderSSR(<App />);
+    const nonce = Math.random().toString().substring(2);
+    const html = renderSSR(<App nonce={nonce} />);
     return new Response(html, {
       headers: {
+        "content-security-policy": `script-src nonce='${nonce}'`,
         "content-type": "text/html",
       },
     });
 }
+
+serve(handler);
