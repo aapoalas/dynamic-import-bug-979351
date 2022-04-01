@@ -22,15 +22,6 @@ function App(nonce) {
   );
 }
 
-app.use(csp({
-  directives: {
-    scriptSrc: [
-      (req, res) => `'nonce-${res.locals.nonce}'`,
-      "'strict-dynamic'",
-    ]
-  }
-}));
-
 function handler(req) {
   const { pathname } = new URL(req.url);
   if (pathname.startsWith("/resources")) {
