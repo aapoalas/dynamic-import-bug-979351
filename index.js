@@ -39,7 +39,7 @@ function handler(req) {
   }
   
     const nonce = Math.random().toString().substring(2);
-    const html = renderSSR(<App nonce={nonce} />);
+    const html = app(nonce);
     return new Response(html, {
       headers: {
         "content-security-policy": `script-src nonce='${nonce}'`,
