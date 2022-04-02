@@ -13,12 +13,12 @@ function app(nonce) {
     </head>
     <body>
       <div class="main">
-        <div class="traditional-start">Script containing traditional script element appending executed</div>
-        <div class="import-start">Script containing static import executed</div>
-        <div class="dynamic-start">Script containing dynamic import executed</div>
-        <div class="traditional-load">Script appended traditionally executed</div>
-        <div class="import-load">Script loaded statically executed</div>
-        <div class="dynamic-load">Script loaded dynamically executed</div>
+        <div class="traditional-start">Script containing traditional script element appending waiting</div>
+        <div class="import-start">Script containing static import waiting</div>
+        <div class="dynamic-start">Script containing dynamic import waiting</div>
+        <div class="traditional-load">Script appended traditionally waiting</div>
+        <div class="import-load">Script loaded statically waiting</div>
+        <div class="dynamic-load">Script loaded dynamically waiting</div>
       </div>
     </body>`;
 }
