@@ -23,20 +23,17 @@ function app(nonce) {
     </body>`;
 }
 
-function handler(req) {
+async function handler(req) {
   console.log("Request for", req.url);
-  const { pathname } = new URL(req.url);console.log(pathname);
+  const { pathname } = new URL(req.url);
   if (pathname.startsWith("/static")) {
-    return Deno.readFile("." + pathname).then(file => 
-    new Reponse(file, {
+    const file = await Deno.readFile("." + pathname);
+    console.log(file);
+    return new Reponse(file, {
       headers: {
         "content-type": req.url.endsWith(".css") ? "text/css" : "application/javascript"
       }
-    })).catch(
-      err => new Response(err.message, {
-        status: 404
-      })
-    );
+    });
   }
   
     const nonce = Math.random().toString().substring(2);
