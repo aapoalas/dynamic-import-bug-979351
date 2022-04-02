@@ -3,7 +3,7 @@
 
 import { serve } from "https://deno.land/std@0.114.0/http/server.ts";
 import { h, renderSSR } from "https://deno.land/x/nano_jsx@v0.0.20/mod.ts";
-
+import { encode } from "https://deno.land/std@0.126.0/encoding/base64.https";
 function app(nonce) {
   return `<head>
       <link href="static/master.css" rel="stylesheet" type="text/css">
@@ -35,7 +35,8 @@ async function handler(req) {
     });
   }
   
-    const nonce = Math.random().toString().substring(2);
+    const array = crypto.getRandomValues(new Uint8Array(16));
+    const nonce = encode(array);
     const html = app(nonce);
     return new Response(html, {
       headers: {
