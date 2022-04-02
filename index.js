@@ -24,6 +24,7 @@ function app(nonce) {
 }
 
 function handler(req) {
+  console.log("Request for", req.url);
   const { pathname } = new URL(req.url);
   if (pathname.startsWith("/resources")) {
     return Deno.readFile("." + pathname).then(file => 
