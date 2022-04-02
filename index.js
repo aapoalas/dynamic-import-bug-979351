@@ -29,7 +29,7 @@ function handler(req) {
     return Deno.readFile("." + pathname).then(file => 
     new Reponse(file, {
       headers: {
-        "content-type": pathname.endsWith(".css") ? "text/css" : "application/javascript"
+        "content-type": req.url.endsWith(".css") ? "text/css" : "application/javascript"
       }
     })).catch(
       err => new Response(err.message, {
