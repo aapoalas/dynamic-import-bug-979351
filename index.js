@@ -33,7 +33,11 @@ async function handler(req) {
         "content-type": req.url.endsWith(".css") ? "text/css" : "application/javascript"
       }
     });
-  }
+  } else if (pathname.includes("favico")) {
+    return new Response("", {
+      status: 404
+    });
+    }
   
     const array = crypto.getRandomValues(new Uint8Array(16));
     const nonce = encode(array);
