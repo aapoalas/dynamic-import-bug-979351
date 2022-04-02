@@ -25,7 +25,7 @@ function app(nonce) {
 
 function handler(req) {
   console.log("Request for", req.url);
-  const { pathname } = new URL(req.url);
+  const { pathname } = new URL(req.url);console.log(pathname);
   if (pathname.startsWith("/static")) {
     return Deno.readFile("." + pathname).then(file => 
     new Reponse(file, {
