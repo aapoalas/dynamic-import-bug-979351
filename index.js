@@ -37,6 +37,7 @@ async function handler(req) {
   
     const array = crypto.getRandomValues(new Uint8Array(16));
     const nonce = encode(array);
+    console.log("nonce", nonce);
     const html = app(nonce);
     return new Response(html, {
       headers: {
