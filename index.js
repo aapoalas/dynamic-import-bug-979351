@@ -7,6 +7,9 @@ import { h, renderSSR } from "https://deno.land/x/nano_jsx@v0.0.20/mod.ts";
 function app(nonce) {
   return `<head>
       <link href="static/master.css" rel="stylesheet" type="text/css">
+      <script src="static/import.js" nonce="${nonce}" type="module" defer></script>
+      <script src="static/traditional.js" nonce="${nonce}" type="module" defer></script>
+      <script src="static/dynamic.js" nonce="${nonce}" type="module" defer></script>
     </head>
     <body>
       <div class="main">
@@ -17,9 +20,6 @@ function app(nonce) {
         <div class="import-load">Script loaded statically executed</div>
         <div class="dynamic-load">Script loaded dynamically executed</div>
       </div>
-      <script src="static/import.js" nonce="${nonce}" type="module" async></script>
-      <script src="static/traditional.js" nonce="${nonce}" type="module" async></script>
-      <script src="static/dynamic.js" nonce="${nonce}" type="module" async></script>
     </body>`;
 }
 
