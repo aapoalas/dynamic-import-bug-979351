@@ -1,5 +1,6 @@
 const element = document.querySelector(".traditional-start");
 element.classList.add("executed");
+element.textContent = element.textContent.replace("waiting", "executed");
 
 const script = document.createElement("script");
 script.type = "module";
