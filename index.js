@@ -1,9 +1,5 @@
-/** @jsx h */
-/// <reference no-default-lib="true"/>
-
 import { serve } from "https://deno.land/std@0.114.0/http/server.ts";
-import { h, renderSSR } from "https://deno.land/x/nano_jsx@v0.0.20/mod.ts";
-import { encode } from "https://deno.land/std@0.126.0/encoding/base64.https";
+import { encode } from "https://deno.land/std@0.126.0/encoding/base64.ts";
 function app(nonce) {
   return `<head>
       <link href="static/master.css" rel="stylesheet" type="text/css">
@@ -24,7 +20,7 @@ function app(nonce) {
 }
 
 async function handler(req) {
-  console.log("Request for", req.url);
+  console.log("Request:", JSON.stringify(req, null, 2));
   const { pathname } = new URL(req.url);
   if (pathname.startsWith("/static")) {
     const file = await Deno.readFile("." + pathname);
