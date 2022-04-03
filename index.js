@@ -20,7 +20,7 @@ function app(nonce) {
 }
 
 async function handler(req) {
-  console.log("Request:", JSON.stringify({ ...req }, null, 2));
+  console.log("Request:", req.referrer, req.credentials, ...req.headers.entries());
   const { pathname } = new URL(req.url);
   if (pathname.startsWith("/static")) {
     const file = await Deno.readFile("." + pathname);
@@ -37,7 +37,6 @@ async function handler(req) {
   
     const array = crypto.getRandomValues(new Uint8Array(16));
     const nonce = encode(array);
-    console.log("nonce", nonce);
     const html = app(nonce);
     return new Response(html, {
       headers: {
