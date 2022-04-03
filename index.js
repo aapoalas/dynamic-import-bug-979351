@@ -3,6 +3,9 @@ import { encode } from "https://deno.land/std@0.126.0/encoding/base64.ts";
 function app(nonce) {
   return `<head>
       <link href="static/master.css" rel="stylesheet" type="text/css">
+      <script src="static/import.js" nonce="${nonce}" type="module" defer></script>
+      <script src="static/traditional.js" nonce="${nonce}" type="module" defer></script>
+      <script src="static/dynamic.js" nonce="${nonce}" type="module" defer></script>
     </head>
     <body>
       <div class="main">
