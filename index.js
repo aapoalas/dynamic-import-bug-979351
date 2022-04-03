@@ -38,7 +38,7 @@ async function handler(req) {
     const html = app(nonce);
     return new Response(html, {
       headers: {
-        //"content-security-policy": `script-src nonce='${nonce}' 'strict-dynamic';`,
+        "content-security-policy": `script-src nonce='${nonce}' 'strict-dynamic'`,
         "content-type": "text/html",
       },
     });
