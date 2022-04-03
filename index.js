@@ -24,6 +24,7 @@ async function handler(req) {
   const { pathname } = new URL(req.url);
   if (pathname.startsWith("/static")) {
     const file = await Deno.readFile("." + pathname);
+    console.log(pathname, req.url.endsWith(".css") ? "text/css" : "application/javascript");
     return new Reponse(file, {
       headers: {
         "content-type": req.url.endsWith(".css") ? "text/css" : "application/javascript"
