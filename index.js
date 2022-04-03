@@ -19,9 +19,13 @@ function app(nonce) {
     </body>`;
 }
 
-const NONCE_MAP = new Map();
-
 async function handler(req) {
+  if (req.method !== "GET") {
+    return new Response(null, {
+      status: 500,
+    });
+  }
+
   const { pathname } = new URL(req.url);
   if (pathname.startsWith("/static")) {
     const file = await Deno.readFile("." + pathname);
@@ -32,22 +36,19 @@ async function handler(req) {
           : "application/javascript",
       },
     });
-  } else if (pathname.includes("favico")) {
-    return new Response(null, {
-      status: 404,
+  } else if (pathname === "/") {
+    const array = crypto.getRandomValues(new Uint8Array(16));
+    const nonce = encode(array);
+    const html = app(nonce);
+    return new Response(html, {
+      headers: {
+        "content-security-policy": `script-src 'nonce-${nonce}' 'strict-dynamic'`,
+        "content-type": "text/html",
+      },
     });
   }
-
-  console.log("Pathname:", pathname);
-
-  const array = crypto.getRandomValues(new Uint8Array(16));
-  const nonce = encode(array);
-  const html = app(nonce);
-  return new Response(html, {
-    headers: {
-      "content-security-policy": `script-src 'nonce-${nonce}' 'strict-dynamic'`,
-      "content-type": "text/html",
-    },
+  return new Response(null, {
+    status: 404,
   });
 }
 
