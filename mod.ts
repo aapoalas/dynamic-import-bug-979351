@@ -19,21 +19,11 @@ function app(nonce: string) {
     </body>`;
 }
 
-const CSP_ENDPOINT = JSON.stringify({
-  group: "csp-endpoint",
-  max_age: 10886400,
-  endpoints: [
-    { url: "https://dynamic-import-bug.deno.dev/csp-report" }
-  ]
-});
-
-console.log(CSP_ENDPOINT);
-
 async function handler(req: Request) {
   if (req.method === "POST" && req.url.includes("csp-report")) {
-    console.log(req.url, req.headers.get("user-agent"));
+    req.text().then(text => console.log(text, req.headers.get("user-agent")));
     return new Response(null, {
-      status: 204
+      status: 204,
     });
   }
   if (req.method !== "GET") {
@@ -53,15 +43,22 @@ async function handler(req: Request) {
       },
     });
   } else if (pathname === "/") {
-    console.log(new URL(req.url).host);
+    const reportTo = JSON.stringify({
+      group: "csp-endpoint",
+      max_age: 10886400,
+      endpoints: [
+        { url: `https://${new URL(req.url).host}/csp-report` },
+      ],
+    });
     const array = crypto.getRandomValues(new Uint8Array(16));
     const nonce = encode(array);
     const html = app(nonce);
     return new Response(html, {
       headers: {
-        "content-security-policy": `script-src 'nonce-${nonce}'; report-uri /csp-report; report-to csp-endpoint`,
+        "content-security-policy":
+          `script-src 'nonce-${nonce}'; report-uri /csp-report; report-to csp-endpoint`,
         "content-type": "text/html",
-        "report-to": CSP_ENDPOINT,
+        "report-to": reportTo,
       },
     });
   }
