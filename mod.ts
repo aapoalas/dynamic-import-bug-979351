@@ -19,6 +19,16 @@ function app(nonce: string) {
     </body>`;
 }
 
+const CSP_ENDPOINT = JSON.stringify({
+  group: "csp-endpoint",
+  max_age: 10886400,
+  endpoints: [
+    { url: new URL("./csp-report", import.meta.url) }
+  ]
+});
+
+console.log(CSP_ENDPOINT);
+
 async function handler(req: Request) {
   if (req.method !== "GET") {
     return new Response(null, {
@@ -42,8 +52,9 @@ async function handler(req: Request) {
     const html = app(nonce);
     return new Response(html, {
       headers: {
-        "content-security-policy": `script-src 'nonce-${nonce}' 'strict-dynamic'`,
+        "content-security-policy": `script-src 'nonce-${nonce}'; report-uri /csp-report; report-to csp-endpoint`,
         "content-type": "text/html",
+        "report-to": CSP_ENDPOINT,
       },
     });
   }
