@@ -21,7 +21,7 @@ function app(nonce: string) {
 
 async function handler(req: Request) {
   if (req.method === "POST" && req.url.includes("csp-report")) {
-    await req.text().then(text => console.log(text, req.headers.get("user-agent")));
+    console.log(req.headers.get("user-agent"));
     return new Response(null, {
       status: 204,
     });
