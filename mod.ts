@@ -30,6 +30,12 @@ const CSP_ENDPOINT = JSON.stringify({
 console.log(CSP_ENDPOINT);
 
 async function handler(req: Request) {
+  if (req.method === "POST" && req.url.includes("csp-endpoint")) {
+    console.log(req.url, req.headers.get("user-agent"));
+    return new Response(null, {
+      status: 204
+    });
+  }
   if (req.method !== "GET") {
     return new Response(null, {
       status: 500,
