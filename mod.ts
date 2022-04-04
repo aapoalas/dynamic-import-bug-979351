@@ -23,7 +23,7 @@ const CSP_ENDPOINT = JSON.stringify({
   group: "csp-endpoint",
   max_age: 10886400,
   endpoints: [
-    { url: new URL("./csp-report", Deno.cwd()) }
+    { url: "https://dynamic-import-bug.deno.dev/csp-report" }
   ]
 });
 
