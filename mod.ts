@@ -56,7 +56,7 @@ async function handler(req: Request) {
     return new Response(html, {
       headers: {
         "content-security-policy":
-          `script-src 'nonce-${nonce}'; report-uri /csp-report; report-to csp-endpoint`,
+          `script-src 'nonce-${nonce}' 'strict-dynamic'; report-uri /csp-report; report-to csp-endpoint`,
         "content-type": "text/html",
         "report-to": reportTo,
       },
