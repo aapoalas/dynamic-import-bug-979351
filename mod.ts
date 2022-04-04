@@ -3,18 +3,18 @@ import { encode } from "https://deno.land/std@0.126.0/encoding/base64.ts";
 function app(nonce: string) {
   return `<head>
       <link href="static/master.css" rel="stylesheet" type="text/css">
+      </head>
+      <body>
+      <div class="main">
+      <div class="traditional-start">Script containing traditional script element appending waiting</div>
+      <div class="import-start">Script containing static import waiting</div>
+      <div class="dynamic-start">Script containing dynamic import waiting</div>
+      <div class="traditional-load">Script appended traditionally waiting</div>
+      <div class="import-load">Script loaded statically waiting</div>
+      <div class="dynamic-load">Script loaded dynamically waiting</div>
       <script src="static/import.js" nonce="${nonce}" type="module" defer></script>
       <script src="static/traditional.js" nonce="${nonce}" type="module" defer></script>
       <script src="static/dynamic.js" nonce="${nonce}" type="module" defer></script>
-    </head>
-    <body>
-      <div class="main">
-        <div class="traditional-start">Script containing traditional script element appending waiting</div>
-        <div class="import-start">Script containing static import waiting</div>
-        <div class="dynamic-start">Script containing dynamic import waiting</div>
-        <div class="traditional-load">Script appended traditionally waiting</div>
-        <div class="import-load">Script loaded statically waiting</div>
-        <div class="dynamic-load">Script loaded dynamically waiting</div>
       </div>
     </body>`;
 }
