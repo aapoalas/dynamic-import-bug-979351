@@ -42,7 +42,7 @@ async function handler(req: Request) {
     const html = app(nonce);
     return new Response(html, {
       headers: {
-        "content-security-policy": `script-src 'nonce-${nonce}'`,
+        "content-security-policy": `script-src 'nonce-${nonce}' 'strict-dynamic'`,
         "content-type": "text/html",
       },
     });
