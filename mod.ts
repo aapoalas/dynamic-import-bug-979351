@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.114.0/http/server.ts";
 import { encode } from "https://deno.land/std@0.126.0/encoding/base64.ts";
-function app(nonce) {
+function app(nonce: string) {
   return `<head>
       <link href="static/master.css" rel="stylesheet" type="text/css">
       <script src="static/import.js" ${/*nonce="${nonce}"*/""} type="module" defer></script>
@@ -19,7 +19,7 @@ function app(nonce) {
     </body>`;
 }
 
-async function handler(req) {
+async function handler(req: Request) {
   if (req.method !== "GET") {
     return new Response(null, {
       status: 500,
@@ -29,7 +29,7 @@ async function handler(req) {
   const { pathname } = new URL(req.url);
   if (pathname.startsWith("/static")) {
     const file = await Deno.readFile("." + pathname);
-    return new Reponse(file, {
+    return new Response(file, {
       headers: {
         "content-type": req.url.endsWith(".css")
           ? "text/css"
