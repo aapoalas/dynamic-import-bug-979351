@@ -53,6 +53,7 @@ async function handler(req: Request) {
       },
     });
   } else if (pathname === "/") {
+    console.log(new URL(req.url).host);
     const array = crypto.getRandomValues(new Uint8Array(16));
     const nonce = encode(array);
     const html = app(nonce);
